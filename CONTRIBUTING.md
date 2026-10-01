@@ -84,6 +84,11 @@ Cada commit es un cambio con sentido propio. El mensaje empieza por el tipo de c
   desde los de Joi con `joi-to-swagger`, así que no se desfasan. `config/swagger.ts` pasa de 685
   líneas escritas a mano a 61.
 
+- **Tags de un libro**: `POST /books/:bookId/tags` añade un tag sin duplicarlo, `PUT` reemplaza la
+  lista entera y `DELETE /books/:bookId/tags/:tag` quita uno. Usan `$addToSet` y `$pull` en
+  `BookService.ts`, y el body se valida con Joi contra `BOOK_TAGS`. Las tres devuelven el libro
+  actualizado con sus autores.
+
 ### En curso
 
 - Nada en este momento.
@@ -101,7 +106,7 @@ Objetivos del Seminario 5:
 
 Los objetivos del seminario están cubiertos. Lo único abierto es el ejercicio propuesto:
 
-- [ ] **CRUD de los tags de un libro**, con el enunciado en [EXERCISE.md](EXERCISE.md).
+- [x] **CRUD de los tags de un libro**, con el enunciado en [EXERCISE.md](EXERCISE.md).
 
 Nota sobre las contraseñas: las de los datos de ejemplo son públicas a propósito (ver el README).
 Este es un proyecto de clase, no una aplicación real.
