@@ -34,19 +34,17 @@ export const deleteBook = (bookId: string) => {
     return Book.findByIdAndDelete(bookId);
 };
 
-// Funcion que añade un tag a un libro
-// Con $addToSet el tag solo se añade si el libro no lo tenia ya, asi no se duplica
+// Añade un tag al libro asegurando que no se duplique ($addToSet)
 export const addTag = (bookId: string, tag: string) => {
     return Book.findByIdAndUpdate(bookId, { $addToSet: { tags: tag } }, { returnDocument: 'after' }).populate('authors');
 };
 
-// Funcion que reemplaza la lista entera de tags de un libro
+// Reemplaza la lista completa de tags del libro
 export const setTags = (bookId: string, tags: string[]) => {
     return Book.findByIdAndUpdate(bookId, { tags }, { returnDocument: 'after' }).populate('authors');
 };
 
-// Funcion que quita un tag de un libro
-// Con $pull si el libro no tenia ese tag no pasa nada y no da error
+// Quita un tag del libro mediante $pull (no da error si no existe)
 export const removeTag = (bookId: string, tag: string) => {
     return Book.findByIdAndUpdate(bookId, { $pull: { tags: tag } }, { returnDocument: 'after' }).populate('authors');
 };

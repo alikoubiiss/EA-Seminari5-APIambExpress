@@ -101,70 +101,55 @@ const deleteBook = async (req: Request<{ bookId: string }>, res: Response, next:
     }
 };
 
-// Función para añadir un tag a un libro
+// Añade un tag al libro y devuelve el resultado
 const addTag = async (req: Request<{ bookId: string }>, res: Response, next: NextFunction) => {
-    // Cogemos el ID del libro de la URL y el tag que llega en el body
     const bookId = req.params.bookId;
     const tag = req.body.tag;
 
     try {
-        // Pedimos al servicio que añada el tag al libro
         const book = await BookService.addTag(bookId, tag);
 
-        // Si el libro existe devolvemos el libro actualizado
         if (book) {
             res.status(200).json({ book });
         } else {
-            // Si no existe devolvemos un error 404
             res.status(404).json({ message: 'not found' });
         }
     } catch (error) {
-        // Si ocurre algun error lo pasamos al siguiente middleware
         next(error);
     }
 };
 
-// Función para reemplazar todos los tags de un libro
+// Reemplaza la lista entera de tags de un libro
 const setTags = async (req: Request<{ bookId: string }>, res: Response, next: NextFunction) => {
-    // Cogemos el ID del libro de la URL y la nueva lista de tags del body
     const bookId = req.params.bookId;
     const tags = req.body.tags;
 
     try {
-        // Pedimos al servicio que reemplace la lista de tags
         const book = await BookService.setTags(bookId, tags);
 
-        // Si el libro existe devolvemos el libro actualizado
         if (book) {
             res.status(200).json({ book });
         } else {
-            // Si no existe devolvemos un error 404
             res.status(404).json({ message: 'not found' });
         }
     } catch (error) {
-        // Si ocurre algun error lo pasamos al siguiente middleware
         next(error);
     }
 };
 
-// Función para quitar un tag de un libro
+// Elimina un tag específico de un libro
 const removeTag = async (req: Request<{ bookId: string; tag: string }>, res: Response, next: NextFunction) => {
-    // Cogemos el ID del libro y el tag que queremos quitar de los parametros de la URL
     const { bookId, tag } = req.params;
 
     try {
-        // Pedimos al servicio que quite el tag del libro
         const book = await BookService.removeTag(bookId, tag);
 
-        // Si el libro existe devolvemos el libro actualizado
         if (book) {
             res.status(200).json({ book });
         } else {
-            // Si no existe devolvemos un error 404
             res.status(404).json({ message: 'not found' });
         }
     } catch (error) {
-        // Si ocurre algun error lo pasamos al siguiente middleware
         next(error);
     }
 };

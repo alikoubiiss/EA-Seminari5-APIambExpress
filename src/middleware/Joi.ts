@@ -166,18 +166,16 @@ export const Schemas = {
             price: Joi.number().min(0)
         }),
 
-        // Esquema que se utiliza para añadir un tag a un libro
+        // Esquema para validar la adición de un único tag permitido
         addTag: Joi.object({
-            // El tag es obligatorio y tiene que ser uno de los permitidos
             tag: Joi.string()
                 .valid(...BOOK_TAGS)
                 .required()
                 .example('fantasia')
         }),
 
-        // Esquema que se utiliza para reemplazar todos los tags de un libro
+        // Esquema para validar la lista completa de tags
         setTags: Joi.object({
-            // La lista es obligatoria y cada tag tiene que ser uno de los permitidos
             tags: Joi.array()
                 .items(Joi.string().valid(...BOOK_TAGS))
                 .required()

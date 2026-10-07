@@ -150,7 +150,6 @@ router.delete('/:bookId', ValidateId('bookId'), controller.deleteBook);
  */
 
 // Ruta para añadir un tag a un libro
-// Comprobamos el ID, despues el tag del body y por ultimo llamamos al controlador
 router.post('/:bookId/tags', ValidateId('bookId'), ValidateJoi(Schemas.book.addTag), controller.addTag);
 
 /**
@@ -209,7 +208,7 @@ router.put('/:bookId/tags', ValidateId('bookId'), ValidateJoi(Schemas.book.setTa
  *       404: { $ref: '#/components/responses/NotFound' }
  */
 
-// Ruta para quitar un tag de un libro
+// Ruta para eliminar un tag de un libro
 router.delete('/:bookId/tags/:tag', ValidateId('bookId'), controller.removeTag);
 
 // Exportamos el router para poder utilizar estas rutas en la aplicacion

@@ -1,0 +1,61 @@
+### DEMO — Tags de un libro
+### Pulsa "Send Request" encima de cada petición, en orden, de arriba abajo.
+### La respuesta sale en el panel de la derecha.
+
+@base = http://localhost:1337/books
+@noExiste = 000000000000000000000000
+
+### 0) Listar libros. El primero es Don Quijote, que empieza con tags: ["novela"]
+# @name libros
+GET {{base}}
+
+###
+@bookId = {{libros.response.body.$.books[0]._id}}
+
+### 1) Añadir "fantasia"  →  200, tags: ["novela","fantasia"]
+POST {{base}}/{{bookId}}/tags
+Content-Type: application/json
+
+{ "tag": "fantasia" }
+
+### 2) La MISMA petición otra vez  →  200, sigue ["novela","fantasia"] (no duplica)
+POST {{base}}/{{bookId}}/tags
+Content-Type: application/json
+
+{ "tag": "fantasia" }
+
+### 3) Tag no permitido "cocina"  →  422 (lo para Joi)
+POST {{base}}/{{bookId}}/tags
+Content-Type: application/json
+
+{ "tag": "cocina" }
+
+### 4) Reemplazar la lista entera  →  200, tags: ["ensayo","historia"]
+PUT {{base}}/{{bookId}}/tags
+Content-Type: application/json
+
+{ "tags": ["ensayo", "historia"] }
+
+### 5) Quitar "historia"  →  200, tags: ["ensayo"]
+DELETE {{base}}/{{bookId}}/tags/historia
+
+### 6) La MISMA petición otra vez  →  200, sigue ["ensayo"] (no da error)
+DELETE {{base}}/{{bookId}}/tags/historia
+
+### 7) Id con formato válido pero que no existe  →  404
+POST {{base}}/{{noExiste}}/tags
+Content-Type: application/json
+
+{ "tag": "fantasia" }
+
+### 8) Id "abc" (no es un id de MongoDB)  →  400 (lo para ValidateId)
+POST {{base}}/abc/tags
+Content-Type: application/json
+
+{ "tag": "fantasia" }
+
+### 9) (Extra, para el final) Dejar el libro como estaba  →  tags: ["novela"]
+PUT {{base}}/{{bookId}}/tags
+Content-Type: application/json
+
+{ "tags": ["novela"] }
